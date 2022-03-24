@@ -7,4 +7,10 @@
         <item name="colorAccent">@color/accent</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="botaoPadrao" parent="Theme.AppCompat.Light">
+        <item name="colorControlHighlight" >#d500f9</item>
+        <item name="colorButtonNormal">@color/primary</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
 </resources>
