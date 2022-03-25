@@ -1,5 +1,6 @@
 package com.gabrielgeorge.olxapp.activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -90,6 +91,7 @@ public class CadastroActivity extends AppCompatActivity {
                                         Toast.makeText(CadastroActivity.this,
                                                 "Logado com sucesso.",
                                                 Toast.LENGTH_SHORT).show();
+                                        startActivity(new Intent(getApplicationContext(), AnunciosActivity.class));
                                     } else {
                                         Toast.makeText(CadastroActivity.this,
                                                 "Erro ao logar usuário.",
