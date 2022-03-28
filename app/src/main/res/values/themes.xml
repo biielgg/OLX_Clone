@@ -9,8 +9,17 @@
     </style>
 
     <style name="botaoPadrao" parent="Theme.AppCompat.Light">
-        <item name="colorControlHighlight" >#d500f9</item>
+        <item name="colorControlHighlight">#d500f9</item>
         <item name="colorButtonNormal">@color/primary</item>
         <item name="android:textColor">@color/white</item>
     </style>
+
+    <style name="Theme.OLXApp.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.OLXApp.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.OLXApp.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
