@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.blackcat.currencyedittext.CurrencyEditText;
 import com.gabrielgeorge.olxapp.R;
@@ -52,8 +53,55 @@ public class CadastrarAnuncioActivity extends AppCompatActivity implements View.
         carregarDadosSpinner();
     }
 
-    public void salvarAnuncio(View view){
-        String valor = campoValor.getText().toString();
+    public void validarDadosAnuncio(View view){
+        String fone = "";
+        String estado = campoEstado.getSelectedItem().toString();
+        String categoria = campoCategoria.getSelectedItem().toString();
+        String titulo = campoTitulo.getText().toString();
+        String valor = String.valueOf(campoValor.getRawValue());
+        String telefone = campoTelefone.getText().toString();
+        if(campoTelefone.getRawText() != null){
+            fone = campoTelefone.getRawText().toString();
+        }
+        String descricao = campoDescricao.getText().toString();
+
+        if(listaFotosRecuperas.size() != 0){
+            if(!estado.isEmpty()){
+                if(!categoria.isEmpty()){
+                    if(!titulo.isEmpty()){
+                        if(!valor.isEmpty() && !valor.equals("0")){
+                            if(!telefone.isEmpty() && fone.length() >= 10){
+                                if(!descricao.isEmpty()){
+                                    salvarAnuncio();
+                                }else{
+                                    exibirMensagemErro("Preencha a descrição do produto.");
+                                }
+                            }else{
+                                exibirMensagemErro("Preencha um telefone para contato valido");
+                            }
+                        }else{
+                            exibirMensagemErro("Preencha o valor do produto.");
+                        }
+                    }else{
+                        exibirMensagemErro("Preencha o titulo do produto.");
+                    }
+                }else{
+                    exibirMensagemErro("Preencha a categoria do produto.");
+                }
+            }else{
+                exibirMensagemErro("Preencha o campo estado.");
+            }
+        }else{
+            exibirMensagemErro("Selecione ao menos uma foto.");
+        }
+    }
+
+    private void exibirMensagemErro(String mensagem){
+        Toast.makeText(this, mensagem, Toast.LENGTH_SHORT).show();
+    }
+
+    public void salvarAnuncio(){
+        exibirMensagemErro("vai salvar");
     }
 
     @Override
