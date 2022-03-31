@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.blackcat.currencyedittext.CurrencyEditText;
 import com.gabrielgeorge.olxapp.R;
 import com.gabrielgeorge.olxapp.helper.Permissoes;
+import com.gabrielgeorge.olxapp.model.Anuncio;
 import com.santalu.maskedittext.MaskEditText;
 
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity implements View.
     private Spinner campoEstado, campoCategoria;
     private CurrencyEditText campoValor;
     private MaskEditText campoTelefone;
+    private Anuncio anuncio;
 
     private String[] permissoes = new String[]{
             Manifest.permission.READ_EXTERNAL_STORAGE
@@ -53,25 +55,41 @@ public class CadastrarAnuncioActivity extends AppCompatActivity implements View.
         carregarDadosSpinner();
     }
 
-    public void validarDadosAnuncio(View view){
-        String fone = "";
+    private Anuncio configurarAnuncio(){
         String estado = campoEstado.getSelectedItem().toString();
         String categoria = campoCategoria.getSelectedItem().toString();
         String titulo = campoTitulo.getText().toString();
         String valor = String.valueOf(campoValor.getRawValue());
         String telefone = campoTelefone.getText().toString();
+        String descricao = campoDescricao.getText().toString();
+
+        Anuncio anuncio = new Anuncio();
+        anuncio.setEstado(estado);
+        anuncio.setCategoria(categoria);
+        anuncio.setTitulo(titulo);
+        anuncio.setValor(valor);
+        anuncio.setTelefone(telefone);
+        anuncio.setDescricao(descricao);
+
+        return anuncio;
+    }
+
+    public void validarDadosAnuncio(View view){
+        String fone = "";
+
         if(campoTelefone.getRawText() != null){
             fone = campoTelefone.getRawText().toString();
         }
-        String descricao = campoDescricao.getText().toString();
+
+        anuncio = configurarAnuncio();
 
         if(listaFotosRecuperas.size() != 0){
-            if(!estado.isEmpty()){
-                if(!categoria.isEmpty()){
-                    if(!titulo.isEmpty()){
-                        if(!valor.isEmpty() && !valor.equals("0")){
-                            if(!telefone.isEmpty() && fone.length() >= 10){
-                                if(!descricao.isEmpty()){
+            if(!anuncio.getEstado().isEmpty()){
+                if(!anuncio.getCategoria().isEmpty()){
+                    if(!anuncio.getTitulo().isEmpty()){
+                        if(!anuncio.getValor().isEmpty() && !anuncio.getValor().equals("0")){
+                            if(!anuncio.getTelefone().isEmpty() && fone.length() >= 10){
+                                if(!anuncio.getDescricao().isEmpty()){
                                     salvarAnuncio();
                                 }else{
                                     exibirMensagemErro("Preencha a descrição do produto.");
@@ -101,7 +119,15 @@ public class CadastrarAnuncioActivity extends AppCompatActivity implements View.
     }
 
     public void salvarAnuncio(){
-        exibirMensagemErro("vai salvar");
+        /*
+        salvar imagem no storage
+         */
+        for(int i = 0; i<= listaFotosRecuperas.size(); i++){
+            String urlImagem = listaFotosRecuperas.get(i);
+            int tamanhoLista = listaFotosRecuperas.size();
+            //salvarFotoStorage(urlImagem, tamanhoLista, i);
+        }
+
     }
 
     @Override
@@ -167,11 +193,11 @@ public class CadastrarAnuncioActivity extends AppCompatActivity implements View.
         campoDescricao  = findViewById(R.id.editDescricao);
         campoValor      = findViewById(R.id.editValor);
         campoTelefone   = findViewById(R.id.editTelefone);
-        campoEstado = findViewById(R.id.spinnerEstado);
-        campoCategoria = findViewById(R.id.spinnerCategoria);
-        imagem1 = findViewById(R.id.imageCadastro1);
-        imagem2 = findViewById(R.id.imageCadastro2);
-        imagem3 = findViewById(R.id.imageCadastro3);
+        campoEstado     = findViewById(R.id.spinnerEstado);
+        campoCategoria  = findViewById(R.id.spinnerCategoria);
+        imagem1         = findViewById(R.id.imageCadastro1);
+        imagem2         = findViewById(R.id.imageCadastro2);
+        imagem3         = findViewById(R.id.imageCadastro3);
         imagem1.setOnClickListener(this);
         imagem2.setOnClickListener(this);
         imagem3.setOnClickListener(this);
