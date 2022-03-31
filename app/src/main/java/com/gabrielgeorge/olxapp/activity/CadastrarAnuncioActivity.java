@@ -21,8 +21,14 @@ import android.widget.Toast;
 
 import com.blackcat.currencyedittext.CurrencyEditText;
 import com.gabrielgeorge.olxapp.R;
+import com.gabrielgeorge.olxapp.helper.ConfiguracaoFirebase;
 import com.gabrielgeorge.olxapp.helper.Permissoes;
 import com.gabrielgeorge.olxapp.model.Anuncio;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.santalu.maskedittext.MaskEditText;
 
 import java.util.ArrayList;
@@ -37,16 +43,21 @@ public class CadastrarAnuncioActivity extends AppCompatActivity implements View.
     private CurrencyEditText campoValor;
     private MaskEditText campoTelefone;
     private Anuncio anuncio;
+    private StorageReference storage;
 
     private String[] permissoes = new String[]{
             Manifest.permission.READ_EXTERNAL_STORAGE
     };
-    private List<String> listaFotosRecuperas = new ArrayList<>();
+    private List<String> listaFotosRecuperadas = new ArrayList<>();
+    private List<String> listaUrlFotos = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastrar_anuncio);
+
+        //configurações iniciais
+        storage = ConfiguracaoFirebase.getFirebaseStorage();
 
         //Validar permissões
         Permissoes.validarPermissoes(permissoes, this, 1);
@@ -83,7 +94,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity implements View.
 
         anuncio = configurarAnuncio();
 
-        if(listaFotosRecuperas.size() != 0){
+        if(listaFotosRecuperadas.size() != 0){
             if(!anuncio.getEstado().isEmpty()){
                 if(!anuncio.getCategoria().isEmpty()){
                     if(!anuncio.getTitulo().isEmpty()){
@@ -122,12 +133,42 @@ public class CadastrarAnuncioActivity extends AppCompatActivity implements View.
         /*
         salvar imagem no storage
          */
-        for(int i = 0; i<= listaFotosRecuperas.size(); i++){
-            String urlImagem = listaFotosRecuperas.get(i);
-            int tamanhoLista = listaFotosRecuperas.size();
-            //salvarFotoStorage(urlImagem, tamanhoLista, i);
+        for(int i = 0; i< listaFotosRecuperadas.size(); i++){
+            String urlImagem = listaFotosRecuperadas.get(i);
+            int tamanhoLista = listaFotosRecuperadas.size();
+            salvarFotoStorage(urlImagem, tamanhoLista, i);
         }
+    }
 
+    private void salvarFotoStorage(String urlString, int totalFotos, int contator){
+        //criar nó no storage
+        StorageReference imagemAnuncio = storage.child("imagens")
+                .child("anuncios")
+                .child(anuncio.getIdAnuncio())
+                .child("imagem" + contator);
+
+        //fazer o upload do arquivo
+        UploadTask uploadTask = imagemAnuncio.putFile(Uri.parse(urlString));
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Uri firebaseUrl = taskSnapshot.getDownloadUrl();
+                String urlConvertida = firebaseUrl.toString();
+
+                listaUrlFotos.add(urlConvertida);
+
+                if(totalFotos == listaUrlFotos.size()){
+                    anuncio.setFotos(listaUrlFotos);
+                    anuncio.salvar();
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure( Exception e) {
+                exibirMensagemErro("Falha ao fazer upload");
+
+            }
+        });
     }
 
     @Override
@@ -167,7 +208,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity implements View.
                 imagem3.setImageURI(imagemSelecionada);
             }
 
-            listaFotosRecuperas.add(caminhoImagem);
+            listaFotosRecuperadas.add(caminhoImagem);
         }
     }
 
