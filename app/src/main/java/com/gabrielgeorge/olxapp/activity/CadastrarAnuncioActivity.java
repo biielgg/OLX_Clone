@@ -2,6 +2,7 @@ package com.gabrielgeorge.olxapp.activity;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -9,7 +10,6 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -35,6 +35,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import dmax.dialog.SpotsDialog;
+
 public class CadastrarAnuncioActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText campoTitulo, campoDescricao;
@@ -44,6 +46,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity implements View.
     private MaskEditText campoTelefone;
     private Anuncio anuncio;
     private StorageReference storage;
+    private AlertDialog dialog;
 
     private String[] permissoes = new String[]{
             Manifest.permission.READ_EXTERNAL_STORAGE
@@ -70,7 +73,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity implements View.
         String estado = campoEstado.getSelectedItem().toString();
         String categoria = campoCategoria.getSelectedItem().toString();
         String titulo = campoTitulo.getText().toString();
-        String valor = String.valueOf(campoValor.getRawValue());
+        String valor = campoValor.getText().toString();
         String telefone = campoTelefone.getText().toString();
         String descricao = campoDescricao.getText().toString();
 
@@ -93,12 +96,13 @@ public class CadastrarAnuncioActivity extends AppCompatActivity implements View.
         }
 
         anuncio = configurarAnuncio();
+        String valor = String.valueOf(campoValor.getRawValue());
 
         if(listaFotosRecuperadas.size() != 0){
             if(!anuncio.getEstado().isEmpty()){
                 if(!anuncio.getCategoria().isEmpty()){
                     if(!anuncio.getTitulo().isEmpty()){
-                        if(!anuncio.getValor().isEmpty() && !anuncio.getValor().equals("0")){
+                        if(!valor.isEmpty() && !valor.equals("0")){
                             if(!anuncio.getTelefone().isEmpty() && fone.length() >= 10){
                                 if(!anuncio.getDescricao().isEmpty()){
                                     salvarAnuncio();
@@ -130,6 +134,13 @@ public class CadastrarAnuncioActivity extends AppCompatActivity implements View.
     }
 
     public void salvarAnuncio(){
+
+        dialog = new SpotsDialog.Builder()
+                .setContext(this)
+                .setMessage("Salvando Anuncio")
+                .setCancelable(false)
+                .build();
+        dialog.show();
         /*
         salvar imagem no storage
          */
@@ -160,6 +171,9 @@ public class CadastrarAnuncioActivity extends AppCompatActivity implements View.
                 if(totalFotos == listaUrlFotos.size()){
                     anuncio.setFotos(listaUrlFotos);
                     anuncio.salvar();
+
+                    dialog.dismiss();
+                    finish();
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
