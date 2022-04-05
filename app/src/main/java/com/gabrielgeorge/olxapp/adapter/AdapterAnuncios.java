@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.gabrielgeorge.olxapp.R;
 import com.gabrielgeorge.olxapp.model.Anuncio;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -33,11 +34,20 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
     @Override
     public void onBindViewHolder(AdapterAnuncios.MyViewHolder myViewHolder, int i) {
 
+        Anuncio anuncio = anuncios.get(i);
+        myViewHolder.titulo.setText(anuncio.getTitulo());
+        myViewHolder.valor.setText(anuncio.getValor());
+
+        //Pega a primeita imagem da lista
+        List<String> urlFotos = anuncio.getFotos();
+        String urlCapa = urlFotos.get(0);
+
+        Picasso.get().load(urlCapa).into(myViewHolder.foto);
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return anuncios.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
