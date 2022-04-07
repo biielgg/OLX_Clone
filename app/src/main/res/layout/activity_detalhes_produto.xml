@@ -4,9 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="8dp"
     android:orientation="vertical"
-    android:padding="8dp"
     tools:context=".activity.DetalhesProdutoActivity">
 
     <com.synnapps.carouselview.CarouselView
@@ -21,16 +19,25 @@
         app:strokeWidth="1dp" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/textTituloDetalhe"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:text="Titulo"
         android:textSize="16sp" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/textPrecoDetalhe"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:paddingBottom="8dp"
         android:text="R$00,00"
         android:textSize="20sp"
@@ -39,12 +46,20 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@android:color/darker_gray"/>
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@android:color/darker_gray" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/textEstadoDetalhe"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:drawableLeft="@drawable/ic_local"
         android:padding="8dp"
         android:text="Estado" />
@@ -52,13 +67,21 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:background="@android:color/darker_gray" />
 
     <TextView
-        android:id="@+id/textView7"
+        android:id="@+id/textDescricaoDetalhe"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:paddingTop="8dp"
         android:paddingBottom="10dp"
         android:text="Descrição" />
 
@@ -66,7 +89,12 @@
         android:id="@+id/button2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:onClick="visualizarTelefone"
         android:text="Ver telefone"
-        android:theme="@style/botaoPadrao"/>
+        android:theme="@style/botaoPadrao" />
 
 </LinearLayout>

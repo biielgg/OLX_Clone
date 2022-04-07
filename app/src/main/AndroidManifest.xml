@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.OLXApp" >
-        <activity android:name=".activity.DetalhesProdutoActivity" >
+        <activity android:name=".activity.DetalhesProdutoActivity"
+            android:parentActivityName=".activity.AnunciosActivity">
         </activity>
         <activity android:name=".activity.CadastrarAnuncioActivity" />
         <activity
